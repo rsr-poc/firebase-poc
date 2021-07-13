@@ -1,4 +1,8 @@
-import { StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const windowWidth =  Dimensions.get('window').width;
+const windowHeight =  Dimensions.get('window').height;
 
 export const homeStyle = StyleSheet.create({
     bgImage: {
@@ -13,8 +17,8 @@ export const homeStyle = StyleSheet.create({
         alignItems: 'center',
     },
     logo: {
-        width: 150,
-        height: 150,
+        width: windowWidth - 50,
+        height: windowHeight * .25,
         resizeMode: 'contain',
         marginBottom: 20
     }
