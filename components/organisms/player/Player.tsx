@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, Image, Text } from 'react-native';
 import { Slider } from 'react-native-elements';
-import { Animated } from 'react-native';
-import { Button } from 'react-native-elements';
 import { Audio, AVPlaybackStatus } from "expo-av";
 import { styles } from '../../../themes/radioad/styles/style';
 import { theme } from '../../../themes/radioad/theme';
-import WhatsappIcon from '../../atoms/WhatsappIcon';
 import PlayButton from '../../molecules/PlayButton';
-import ShareIcon from '../../atoms/ShareIcon';
 import VolumeDownIcon from '../../atoms/VolumeDownIcon';
 import VolumeUpIcon from '../../atoms/VolumeUpIcon';
+import ShareButton from '../../molecules/ShareButton';
+import WhatsAppButton from '../../molecules/WhatsAppButton';
+
 
 const soundObject = new Audio.Sound();
 export default () => {
@@ -69,10 +68,16 @@ export default () => {
 
     return (
       <View style={styles.player.container}>
+        <View style={styles.player.equalizerContainer}>
+            {
+              isPlaying ? <Image source={require('../../../assets/equalizer.gif')} style={styles.player.equalizer} />
+              : <Image source={require('../../../assets/equalizer_paused.png')} style={styles.player.equalizer} />
+            }
+        </View>
         <View style={styles.player.controlContainer}>
-            <Button icon={<WhatsappIcon />} type="clear" containerStyle={styles.player.buttonSide} />
+            <WhatsAppButton />
             <PlayButton isLoaded={isBuffering?.isLoaded} isPlaying={isPlaying} press={radio} />
-            <Button icon={<ShareIcon />} type="clear" containerStyle={styles.player.buttonSide}/>
+            <ShareButton />
         </View>
         <View style={styles.player.volumeContainer}>
           <VolumeDownIcon />

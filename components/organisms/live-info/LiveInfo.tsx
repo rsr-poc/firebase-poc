@@ -1,34 +1,34 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Image } from 'react-native-elements';
-import { Chip } from 'react-native-elements';
-
+import { Image, LinearProgress } from 'react-native-elements';
+import { useInfo } from '../../../hooks/useInfo';
+import { LiveInfoModel } from '../../../models/liveInfo.model';
+import { styles } from '../../../themes/radioad/styles/style';
 
 export default () => {
+    const {data, loading, error} = useInfo<LiveInfoModel>();
+   
     return (
-        <View
-        style={{
-            flexDirection: "row",
-            width: '100%',
-            height: 150,
-            borderRadius: 5,
-            backgroundColor: 'rgba(255,255,255,0.06)',
-            padding:10,
-            marginVertical: 20
-          }}
-        >
-        <View style={{ margin:10, flex: 0.4 }}>
-            <Image source={{uri: 'https://studiosol-a.akamaihd.net/tb/letras-blog/wp-content/uploads/2019/07/9341a8b-anderson_freire.jpg'}} style={{ width: "100%", height:110, borderRadius: 5}} />
-        </View>
-        <View style={{ margin:10, flex: 0.6, justifyContent: 'center' }}>
-            <View style={{flexDirection: 'row'}}>
-                <Text  numberOfLines={1} style={{color: 'white', paddingHorizontal: 5, paddingVertical: 2, backgroundColor: 'rgba(0,0,0,0.14)', flex: 0, marginBottom: 5}}>Ao vivo</Text>
+        <View>
+        {data?
+        <View style={styles.liveInfo.liveContainer}>
+
+            <View style={styles.liveInfo.imageContainer}>
+                <Image source={{uri: data.capa_musica}} style={styles.liveInfo.image} />
             </View>
-
-            <Text numberOfLines={1} style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>Cristo é solução</Text>
-            <Text numberOfLines={1} style={{color: 'white'}}>Pastor Jairo de Jesus</Text>
+            <View style={styles.liveInfo.descriptionContainer}>
+                <View style={styles.liveInfo.liveStatusContainer}>
+                    <Text  numberOfLines={1} style={styles.liveInfo.liveStatus}>Ao vivo</Text>
+                </View>
+                <Text numberOfLines={1} style={styles.liveInfo.liveTitle}>{data.musica_atual}</Text>
+                <Text numberOfLines={1} style={styles.liveInfo.liveSubTitle}>A seguir: {data.proxima_musica}</Text>
+            </View>
         </View>
-
+        : loading?
+        <View style={styles.liveInfo.liveInfoLoadingContainer}><LinearProgress color="primary" variant="indeterminate" style={styles.liveInfo.liveInfoLoading} /></View>
+        :
+        <View style={styles.liveInfo.liveContainer}><Text>error</Text></View>
+        }
         </View>
     )
 }

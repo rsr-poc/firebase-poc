@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { homeStyle } from './homeStyle';
+import { liveInfoStyle } from './liveInfoStyle';
 import { playerStyle } from './playerStyle';
 
 
@@ -13,5 +14,6 @@ const globalStyle = StyleSheet.create({
 export const styles = {
     global: globalStyle,
     home: homeStyle,
-    player: playerStyle
+    player: playerStyle,
+    liveInfo: liveInfoStyle
 }

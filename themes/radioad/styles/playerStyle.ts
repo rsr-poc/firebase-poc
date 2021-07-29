@@ -1,16 +1,19 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { theme } from '../theme';
+import { windowHeight, windowWidth } from './dimensions';
+
 export const playerStyle = StyleSheet.create({
     container: {
         flexDirection: 'column',
     },
     controlContainer: {
         flexDirection:"row",
-        alignItems:'center'
+        alignItems:'center',
+        justifyContent: 'center'
     },
     buttonSide:{
         borderRadius: 60,
-        marginHorizontal: 10
+        marginHorizontal: 10,
     },
     buttonIconSide: {
         padding: 20
@@ -28,7 +31,7 @@ export const playerStyle = StyleSheet.create({
         backgroundColor: theme.colors.bgTransparent,
         borderRadius: 60,
         borderColor: 'white',
-        borderWidth: .5
+        borderWidth: .5,
     },
     volumeContainer: {
         flexDirection:"row",
@@ -42,5 +45,17 @@ export const playerStyle = StyleSheet.create({
     volumeThumb:{
         width: 20,
         height: 20
+    },
+    equalizer: {
+        width: windowWidth - 50,
+        height: windowHeight * .1,
+        resizeMode: 'contain',
+        opacity: 0.3
+    },
+    equalizerContainer: {
+        width: windowWidth - 50,
+        height: windowHeight * .1,
+        marginBottom: 20,
+        borderBottomColor: theme.colors.bgTransparent,
     }
 });
