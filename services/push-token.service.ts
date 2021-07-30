@@ -11,6 +11,8 @@ export class PushTokenService{
     async performToken(token: string){
         try {
             const value = await AsyncStorage.getItem('@push_token')
+            console.log('token é...')
+            console.log(value)
             if(value && value == token) {
                 console.log('token already exists');
                 return;
@@ -25,8 +27,7 @@ export class PushTokenService{
 
     async saveToken(token: string) {
         try {
-            await AsyncStorage.setItem('@push_token', token)
-            return await fetch(this.api, {
+            return fetch(this.api, {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
@@ -35,7 +36,10 @@ export class PushTokenService{
                 body: JSON.stringify({
                   pushToken: token
                 })
-              }).then((response)=> console.info(JSON.stringify(response)))
+              }).then((response)=> {
+                AsyncStorage.setItem('@push_token', token)
+                console.info(JSON.stringify(response))
+              })
               .catch((error)=>console.info(JSON.stringify(error)))
         } catch (e) {
             // saving error
