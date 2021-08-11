@@ -21,7 +21,7 @@ export default () => {
                     <Text  numberOfLines={1} style={styles.liveInfo.liveStatus}>Ao vivo</Text>
                 </View>
                 <Text numberOfLines={1} style={styles.liveInfo.liveTitle}>{data.musica_atual}</Text>
-                <Text numberOfLines={1} style={styles.liveInfo.liveSubTitle}>A seguir: {data.proxima_musica}</Text>
+                <Text numberOfLines={1} style={styles.liveInfo.liveSubTitle}>A seguir: {Object.keys(data.proxima_musica).length > 0? data.proxima_musica : '-'}</Text>
             </View>
         </View>
         : loading?

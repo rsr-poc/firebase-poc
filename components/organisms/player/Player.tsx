@@ -9,6 +9,9 @@ import VolumeDownIcon from '../../atoms/VolumeDownIcon';
 import VolumeUpIcon from '../../atoms/VolumeUpIcon';
 import ShareButton from '../../molecules/ShareButton';
 import WhatsAppButton from '../../molecules/WhatsAppButton';
+import { useRadioConfig } from '../../../hooks/useRadioConfig';
+import { RadioConfigModel } from '../../../models/radioConfig.model';
+import { RadioConfigsService } from '../../../services/radio-configs.service';
 
 
 const soundObject = new Audio.Sound();
@@ -17,44 +20,82 @@ export default () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isBuffering, setIsBuffering] = useState<AVPlaybackStatus>();
     const [sound, setSound] = React.useState<Audio.Sound>();
+    const radioConfigService = new RadioConfigsService();
+    const [config, setConfig] = useState<RadioConfigModel>();
 
     useEffect(()=>{
       sound?.setVolumeAsync(volume)
     })
 
+    useEffect(()=>{
+      getConfig();
+    }, [])
+
+    async function getConfig(){
+      try{
+        const config = await radioConfigService.get();
+        setConfig(config)
+      }catch(e){
+        return e;
+      }
+    }
 
     async function load(){
       setIsPlaying(true);
-      try{
-        Audio.setAudioModeAsync({
-            allowsRecordingIOS: false,
-            staysActiveInBackground: true,
-            interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DUCK_OTHERS,
-            playsInSilentModeIOS: true,
-            shouldDuckAndroid: true,
-            interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
-            playThroughEarpieceAndroid: false
-        })
-        const playbackInstance = new Audio.Sound()
-        const source = {
-          uri: 'http://stm23.xcast.com.br:7362'
-        }
-        const status = {
-          shoudPlay: isPlaying,
-          volume: volume
-        }
-        playbackInstance.setOnPlaybackStatusUpdate((status)=> setIsBuffering(status))
-        await playbackInstance.loadAsync(source, status, false)
-        await playbackInstance.playAsync();
-        setSound(playbackInstance);
-      } catch (e) {
-        console.log(e)
+      Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        staysActiveInBackground: true,
+        interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DUCK_OTHERS,
+        playsInSilentModeIOS: true,
+        shouldDuckAndroid: true,
+        interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+        playThroughEarpieceAndroid: false
+      })
+      const playbackInstance = new Audio.Sound()
+      const status = {
+        shoudPlay: isPlaying,
+        volume: volume
       }
+      playbackInstance.setOnPlaybackStatusUpdate((status)=> setIsBuffering(status))
+      
+      let sourceActive;
+      let control = 0;
+      while(!sourceActive){
+        try{
+          if(control % 2 === 0 && config){
+            const source = {uri: config.ipMaster}
+            await playbackInstance.loadAsync(source, status, false)
+            await playbackInstance.playAsync();
+            setSound(playbackInstance);
+            sourceActive = true
+          }
+          else if(control % 2 === 1 && config){
+            const source = {uri: config.ipSlave}
+            await playbackInstance.loadAsync(source, status, false)
+            await playbackInstance.playAsync();
+            setSound(playbackInstance);
+            sourceActive = true
+          }
+        }catch(e){
+          console.log(e)
+          control++
+          if(control === 6 ){
+            setIsPlaying(false)
+            sourceActive = true
+          }else{
+            sourceActive = false
+          }
+        }
+      }
+
     }
 
     async function radio(){
       if(!isPlaying){
-        load();
+        console.log(config)
+        if(config){
+          load();
+        }
       }else{
         try{
           await sound?.pauseAsync();

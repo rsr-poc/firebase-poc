@@ -1,18 +1,16 @@
 import Axios, { AxiosInstance } from "axios";
 import { LiveInfoModel } from "../models/liveInfo.model";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { API_URL } from '@env';
 export class PushTokenService{
     api: string;
     constructor() {
-        this.api = 'http://192.168.0.109:3000/api/reg-token'
+        this.api = `${API_URL}reg-token`
     }
 
     async performToken(token: string){
         try {
             const value = await AsyncStorage.getItem('@push_token')
-            console.log('token é...')
-            console.log(value)
             if(value && value == token) {
                 console.log('token already exists');
                 return;
