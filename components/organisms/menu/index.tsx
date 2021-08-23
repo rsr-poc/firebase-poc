@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ImageBackground } from 'react-native';
 import { styles } from '../../../themes/radioad/styles/style';
+import { API_URL } from '@env';
 
 export default () =>{
     return (

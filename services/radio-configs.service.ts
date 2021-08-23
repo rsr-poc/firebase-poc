@@ -9,7 +9,13 @@ export class RadioConfigsService{
     }
 
     async get(): Promise<RadioConfigModel> {
-        const { data } = await this.api.get('radio-configs')
-        return data
+        try{
+            const { data } = await this.api.get('radio-configs')
+            return data
+        }catch(error){
+            return error
+        }
+
+
     }
 }

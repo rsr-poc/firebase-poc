@@ -10,7 +10,7 @@ export default () =>{
         try {
           const result = await Share.share({
             message: `Olá, gostaria de compartilhar com você o app da rádio AD Catalão. \n
-            basta seguir o link da play store (android): link1, ou da app store (ios): link2`,
+            basta seguir o link da play store (android): https://play.google.com/store/apps/details?id=br.com.radioadc, ou da app store (ios): https://apps.apple.com/us/app/r%C3%A1dio-ad-catal%C3%A3o/id1581470452`,
           });
         } catch (error) {
           alert(error.message);

@@ -41,6 +41,7 @@ export class PushTokenService{
               .catch((error)=>console.info(JSON.stringify(error)))
         } catch (e) {
             // saving error
+            console.log('deu erro')
             console.info(e)
         }
 

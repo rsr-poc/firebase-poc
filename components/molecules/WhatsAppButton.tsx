@@ -6,7 +6,7 @@ import WhatsappIcon from '../atoms/WhatsappIcon';
 
 export default () =>{
     const whatsapp = () =>{
-        return Linking.openURL('https://wa.me/5564981164098')
+        return Linking.openURL('https://wa.me/556499953097')
     }
     return (
         <Button icon={<WhatsappIcon />} type="clear" containerStyle={styles.player.buttonSide} onPress={whatsapp} />
